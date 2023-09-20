@@ -23,6 +23,25 @@ class RegularVerbsCollection {
     );
   }
 
+  static InflectedVerb mkPast(List<String> baseVerbs) {
+    List<String> f(String face) {
+      return baseVerbs.map((v) => '$v $face').toList();
+    }
+
+    return (
+      singular: (
+        first: f('էի'),
+        second: f('էիր'),
+        third: f('էր'),
+      ),
+      plural: (
+        first: f('էինք'),
+        second: f('էիք'),
+        third: f('էին'),
+      ),
+    );
+  }
+
   RegularVerbsCollection({
     required this.infinitive,
     required this.stamp,
@@ -75,5 +94,9 @@ class RegularVerbsCollection {
 
   InflectedVerb get present {
     return RegularVerbsCollection.mkPresent(['$stampում']);
+  }
+
+  InflectedVerb get pastContinious {
+    return RegularVerbsCollection.mkPast(['$stampում']);
   }
 }

@@ -35,6 +35,7 @@ class _FormExampleState extends State<VerbsForm> {
   final Map<String, bool> _fieldsEnabled = {
     'Imperative mood': true,
     'Present simple': true,
+    'Past continious': true,
   };
 
   void _submit() {
@@ -49,8 +50,7 @@ class _FormExampleState extends State<VerbsForm> {
     });
     // validate after state udpate
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _formKey.currentState
-          ?.validate(focusOnInvalid: true, autoScrollWhenFocusOnInvalid: true);
+      _formKey.currentState?.validate();
     });
   }
 
@@ -190,6 +190,8 @@ class _FormExampleState extends State<VerbsForm> {
                           title: 'Imperative mood'),
                     if (_fieldsEnabled['Present simple'] == true)
                       _inflectedVerb('Present simple', _verb?.present),
+                    if (_fieldsEnabled['Past continious'] == true)
+                      _inflectedVerb('Past continious', _verb?.pastContinious),
                     Padding(
                       padding: _verticalPadding,
                       child: ElevatedButton(

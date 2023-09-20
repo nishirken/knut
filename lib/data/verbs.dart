@@ -15,17 +15,21 @@ Verb getVerb(String rawValue) {
 
   if (irregular != null) {
     return Verb(
-        infinitive: infinitive,
-        stamp: stamp,
-        imperativeMood: irregular.imperative,
-        present: irregular.present);
+      infinitive: infinitive,
+      stamp: stamp,
+      imperativeMood: irregular.imperative,
+      present: irregular.present,
+      pastContinious: irregular.pastContinious,
+    );
   } else if (effectiveRawValue.length < 4) {
     throw AssertionError();
   } else {
     return Verb(
-        infinitive: infinitive,
-        stamp: stamp,
-        imperativeMood: regularVerbs.imperativeMood,
-        present: regularVerbs.present);
+      infinitive: infinitive,
+      stamp: stamp,
+      imperativeMood: regularVerbs.imperativeMood,
+      present: regularVerbs.present,
+      pastContinious: regularVerbs.pastContinious,
+    );
   }
 }

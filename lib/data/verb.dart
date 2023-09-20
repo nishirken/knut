@@ -21,11 +21,13 @@ class Verb {
   final String stamp;
   final ImperativeMood imperativeMood;
   final InflectedVerb present;
+  final InflectedVerb pastContinious;
 
   Verb({
     required this.infinitive,
     required this.stamp,
     required this.imperativeMood,
     required this.present,
+    required this.pastContinious,
   });
 }
