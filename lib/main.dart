@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/data/irregular_verbs.dart';
 import 'package:namer_app/data/verb.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:namer_app/data/verbs.dart';
 import 'package:namer_app/inputs_block_widget.dart';
+import 'package:namer_app/keys.dart';
 import 'package:namer_app/supported_verbs_widget.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 
-void main() => runApp(const FormExampleApp());
+void main() => runApp(const KnutApp());
 
-class FormExampleApp extends StatelessWidget {
-  const FormExampleApp({super.key});
+class KnutApp extends StatelessWidget {
+  const KnutApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,43 +74,39 @@ class _FormExampleState extends State<VerbsForm> {
     return InputsBlockWidget(validate: _validate, title: title, fields: (
       [
         (
-          name: '$title-${verb?.singular.first ?? ''}-first',
+          name: '$title-singular-first',
           hintText: 'singular first',
           equalValues: verb?.singular.first,
         ),
         (
-          name: '$title-${verb?.singular.second ?? ''}-second',
+          name: '$title-singular-second',
           hintText: 'singular second',
           equalValues: verb?.singular.second,
         ),
         (
-          name: '$title-${verb?.singular.third ?? ''}-third',
+          name: '$title-singular-third',
           hintText: 'singular third',
           equalValues: verb?.singular.third,
         )
       ],
       [
         (
-          name: '$title-${verb?.plural.first ?? ''}-first',
+          name: '$title-plural-first',
           hintText: 'plural first',
           equalValues: verb?.plural.first,
         ),
         (
-          name: '$title-${verb?.plural.second ?? ''}-second',
+          name: '$title-plural-second',
           hintText: 'plural second',
           equalValues: verb?.plural.second,
         ),
         (
-          name: '$title-${verb?.plural.third ?? ''}-third',
+          name: '$title-plural-third',
           hintText: 'plural third',
           equalValues: verb?.plural.third,
         )
       ],
     ));
-  }
-
-  Irregular get _irregularVerbs {
-    return IrregularVerbsCollection(infinitive: '', stamp: '').collection;
   }
 
   @override
@@ -134,6 +131,7 @@ class _FormExampleState extends State<VerbsForm> {
                         itemCount: fields.length,
                         itemBuilder: (BuildContext context, int index) {
                           return CheckboxListTile(
+                              key: keys.inputsBlockCheckbox(fields[index].key),
                               title: Text(fields[index].key),
                               value: fields[index].value,
                               onChanged: (changed) {
@@ -144,7 +142,7 @@ class _FormExampleState extends State<VerbsForm> {
                               });
                         }),
                   ),
-                  SupportedVerbsWidget(irregularVerbs: _irregularVerbs),
+                  SupportedVerbsWidget(),
                 ]),
               ),
             ),
@@ -156,7 +154,10 @@ class _FormExampleState extends State<VerbsForm> {
                   children: [
                     InputsBlockWidget(
                         validate: true,
-                        validator: _verbValidator,
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          _verbValidator,
+                        ]),
                         fields: (
                           [
                             (
@@ -195,6 +196,7 @@ class _FormExampleState extends State<VerbsForm> {
                     Padding(
                       padding: _verticalPadding,
                       child: ElevatedButton(
+                        key: keys.submitButton,
                         onPressed: _submit,
                         child: const Text('Check'),
                       ),

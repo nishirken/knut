@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:namer_app/keys.dart';
 
 typedef Field = ({
   String name,
@@ -27,7 +28,7 @@ class InputsBlockWidget extends StatelessWidget {
   FormFieldValidator<String?> _validator(List<String> equalValues) {
     return (String? value) {
       if (value != null && !equalValues.contains(value)) {
-        return "The value must be one of ${equalValues.join(', ')}";
+        return "The value must be ${equalValues.join('or ').trim()}";
       }
       return null;
     };
@@ -36,6 +37,7 @@ class InputsBlockWidget extends StatelessWidget {
   List<Widget> _column(List<Field> columnFields) {
     return columnFields.map((field) {
       return FormBuilderTextField(
+        key: keys.verbInput(field.name),
         name: field.name,
         decoration: InputDecoration(
           hintText: field.hintText,
@@ -56,6 +58,7 @@ class InputsBlockWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
+      key: keys.inputsBlock(title),
       padding: const EdgeInsets.only(bottom: 34.0),
       child: Column(children: [
         Text(title,
