@@ -60,10 +60,10 @@ class InputsBlockWidget extends StatelessWidget {
     return Padding(
       key: keys.inputsBlock(title),
       padding: const EdgeInsets.only(bottom: 34.0),
-      child: Column(children: [
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(title,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-        SizedBox(width: 0, height: 24),
+        const SizedBox(width: 0, height: 24),
         Row(children: [
           Flexible(
             child: Column(
@@ -77,7 +77,7 @@ class InputsBlockWidget extends StatelessWidget {
             ),
           ),
         ]),
-      ], crossAxisAlignment: CrossAxisAlignment.start),
+      ]),
     );
   }
 }

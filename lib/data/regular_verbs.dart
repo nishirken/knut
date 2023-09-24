@@ -99,4 +99,61 @@ class RegularVerbsCollection {
   InflectedVerb get pastContinious {
     return RegularVerbsCollection.mkPast(['$stampում']);
   }
+
+  InflectedVerb get futureSimple {
+    List<String> f(String endingEl, String endingAl) {
+      return ['կ$stamp${regularAl ? endingAl : endingEl}'];
+    }
+
+    return (
+      singular: (
+        first: f('եմ', 'ամ'),
+        second: f('ես', 'աս'),
+        third: f('ի', 'ա'),
+      ),
+      plural: (
+        first: f('ենք', 'անք'),
+        second: f('եք', 'աք'),
+        third: f('են', 'ան'),
+      ),
+    );
+  }
+
+  InflectedVerb get futureSimpleNegative {
+    List<String> f(String face) {
+      return ['չ$face $stamp${regularAl ? 'ա' : 'ի'}'];
+    }
+
+    return (
+      singular: (
+        first: f('եմ'),
+        second: f('ես'),
+        third: f('ի'),
+      ),
+      plural: (
+        first: f('ենք'),
+        second: f('եք'),
+        third: f('են'),
+      ),
+    );
+  }
+
+  InflectedVerb get goingTo {
+    List<String> f(String face) {
+      return ['$infinitiveու $face'];
+    }
+
+    return (
+      singular: (
+        first: f('եմ'),
+        second: f('ես'),
+        third: f('է'),
+      ),
+      plural: (
+        first: f('ենք'),
+        second: f('եք'),
+        third: f('են'),
+      ),
+    );
+  }
 }

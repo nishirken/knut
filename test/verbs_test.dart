@@ -38,6 +38,23 @@ void main() {
     test('Present', () {
       expect(getVerb(regularVerbAl).present.singular.third, ['կարդում է']);
     });
+
+    test('Future simple', () {
+      expect(getVerb(regularVerbEl).futureSimple.singular.first, ['կվազեմ']);
+      expect(getVerb(regularVerbAl).futureSimple.singular.third, ['կկարդա']);
+    });
+
+    test('Future simple negative', () {
+      expect(getVerb(regularVerbEl).futureSimpleNegative.plural.second,
+          ['չեք վազի']);
+      expect(getVerb(regularVerbAl).futureSimpleNegative.plural.second,
+          ['չեք կարդա']);
+    });
+
+    test('Going to', () {
+      expect(getVerb(regularVerbEl).goingTo.singular.first, ['վազելու եմ']);
+      expect(getVerb(regularVerbAl).goingTo.singular.third, ['կարդալու է']);
+    });
   });
 
   group('Irregular', () {

@@ -33,10 +33,22 @@ class _FormExampleState extends State<VerbsForm> {
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
   final _verticalPadding = const EdgeInsets.symmetric(vertical: 16.0);
   Verb? _verb;
-  final Map<String, bool> _fieldsEnabled = {
-    'Imperative mood': true,
-    'Present simple': true,
-    'Past continious': true,
+  final Map<Tense, bool> _fieldsEnabled = {
+    Tense.imperative: true,
+    Tense.present: true,
+    Tense.pastContinious: true,
+    Tense.futureSimple: true,
+    Tense.futureSimpleNegative: true,
+    Tense.goingTo: true,
+  };
+  final Map<Tense, String> titles = {
+    Tense.infinitive: 'Infinitive',
+    Tense.imperative: 'Imperative mood',
+    Tense.present: 'Present',
+    Tense.pastContinious: 'Past continious',
+    Tense.futureSimple: 'Future simple',
+    Tense.futureSimpleNegative: 'Future simple negative',
+    Tense.goingTo: 'Going to',
   };
 
   void _submit() {
@@ -70,43 +82,46 @@ class _FormExampleState extends State<VerbsForm> {
     return _verb != null;
   }
 
-  Widget _inflectedVerb(String title, InflectedVerb? verb) {
-    return InputsBlockWidget(validate: _validate, title: title, fields: (
-      [
-        (
-          name: '$title-singular-first',
-          hintText: 'singular first',
-          equalValues: verb?.singular.first,
-        ),
-        (
-          name: '$title-singular-second',
-          hintText: 'singular second',
-          equalValues: verb?.singular.second,
-        ),
-        (
-          name: '$title-singular-third',
-          hintText: 'singular third',
-          equalValues: verb?.singular.third,
-        )
-      ],
-      [
-        (
-          name: '$title-plural-first',
-          hintText: 'plural first',
-          equalValues: verb?.plural.first,
-        ),
-        (
-          name: '$title-plural-second',
-          hintText: 'plural second',
-          equalValues: verb?.plural.second,
-        ),
-        (
-          name: '$title-plural-third',
-          hintText: 'plural third',
-          equalValues: verb?.plural.third,
-        )
-      ],
-    ));
+  Widget _inflectedVerb(Tense tense, InflectedVerb? verb) {
+    return InputsBlockWidget(
+        validate: _validate,
+        title: titles[tense]!,
+        fields: (
+          [
+            (
+              name: '$tense-singular-first',
+              hintText: 'singular first',
+              equalValues: verb?.singular.first,
+            ),
+            (
+              name: '$tense-singular-second',
+              hintText: 'singular second',
+              equalValues: verb?.singular.second,
+            ),
+            (
+              name: '$tense-singular-third',
+              hintText: 'singular third',
+              equalValues: verb?.singular.third,
+            )
+          ],
+          [
+            (
+              name: '$tense-plural-first',
+              hintText: 'plural first',
+              equalValues: verb?.plural.first,
+            ),
+            (
+              name: '$tense-plural-second',
+              hintText: 'plural second',
+              equalValues: verb?.plural.second,
+            ),
+            (
+              name: '$tense-plural-third',
+              hintText: 'plural third',
+              equalValues: verb?.plural.third,
+            )
+          ],
+        ));
   }
 
   @override
@@ -122,7 +137,7 @@ class _FormExampleState extends State<VerbsForm> {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-              child: Container(
+              child: SizedBox(
                 width: 250,
                 child: Column(children: [
                   Expanded(
@@ -132,7 +147,7 @@ class _FormExampleState extends State<VerbsForm> {
                         itemBuilder: (BuildContext context, int index) {
                           return CheckboxListTile(
                               key: keys.inputsBlockCheckbox(fields[index].key),
-                              title: Text(fields[index].key),
+                              title: Text(titles[fields[index].key]!),
                               value: fields[index].value,
                               onChanged: (changed) {
                                 setState(() {
@@ -168,8 +183,8 @@ class _FormExampleState extends State<VerbsForm> {
                           ],
                           []
                         ),
-                        title: 'Infinitive'),
-                    if (_fieldsEnabled['Imperative mood'] == true)
+                        title: titles[Tense.infinitive]!),
+                    if (_fieldsEnabled[Tense.imperative] == true)
                       InputsBlockWidget(
                           validate: _validate,
                           fields: (
@@ -189,10 +204,18 @@ class _FormExampleState extends State<VerbsForm> {
                             ]
                           ),
                           title: 'Imperative mood'),
-                    if (_fieldsEnabled['Present simple'] == true)
-                      _inflectedVerb('Present simple', _verb?.present),
-                    if (_fieldsEnabled['Past continious'] == true)
-                      _inflectedVerb('Past continious', _verb?.pastContinious),
+                    if (_fieldsEnabled[Tense.present] == true)
+                      _inflectedVerb(Tense.present, _verb?.present),
+                    if (_fieldsEnabled[Tense.pastContinious] == true)
+                      _inflectedVerb(
+                          Tense.pastContinious, _verb?.pastContinious),
+                    if (_fieldsEnabled[Tense.futureSimple] == true)
+                      _inflectedVerb(Tense.futureSimple, _verb?.futureSimple),
+                    if (_fieldsEnabled[Tense.futureSimpleNegative] == true)
+                      _inflectedVerb(Tense.futureSimpleNegative,
+                          _verb?.futureSimpleNegative),
+                    if (_fieldsEnabled[Tense.goingTo] == true)
+                      _inflectedVerb(Tense.goingTo, _verb?.goingTo),
                     Padding(
                       padding: _verticalPadding,
                       child: ElevatedButton(

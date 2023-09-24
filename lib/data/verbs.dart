@@ -20,6 +20,9 @@ Verb getVerb(String rawValue) {
       imperativeMood: irregular.imperative,
       present: irregular.present,
       pastContinious: irregular.pastContinious,
+      futureSimple: regularVerbs.futureSimple,
+      futureSimpleNegative: regularVerbs.futureSimpleNegative,
+      goingTo: regularVerbs.goingTo,
     );
   } else if (effectiveRawValue.length < 4) {
     throw AssertionError();
@@ -30,6 +33,9 @@ Verb getVerb(String rawValue) {
       imperativeMood: regularVerbs.imperativeMood,
       present: regularVerbs.present,
       pastContinious: regularVerbs.pastContinious,
+      futureSimple: regularVerbs.futureSimple,
+      futureSimpleNegative: regularVerbs.futureSimpleNegative,
+      goingTo: regularVerbs.goingTo,
     );
   }
 }

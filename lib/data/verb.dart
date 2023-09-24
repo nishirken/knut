@@ -16,12 +16,25 @@ typedef EndingsSets<T> = ({
 
 typedef ImperativeMood = ({List<String> singular, List<String> plural});
 
+enum Tense {
+  infinitive,
+  imperative,
+  present,
+  pastContinious,
+  futureSimple,
+  futureSimpleNegative,
+  goingTo,
+}
+
 class Verb {
   final String infinitive;
   final String stamp;
   final ImperativeMood imperativeMood;
   final InflectedVerb present;
   final InflectedVerb pastContinious;
+  final InflectedVerb futureSimple;
+  final InflectedVerb futureSimpleNegative;
+  final InflectedVerb goingTo;
 
   Verb({
     required this.infinitive,
@@ -29,5 +42,8 @@ class Verb {
     required this.imperativeMood,
     required this.present,
     required this.pastContinious,
+    required this.futureSimple,
+    required this.futureSimpleNegative,
+    required this.goingTo,
   });
 }
