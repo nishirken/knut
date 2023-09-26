@@ -47,8 +47,12 @@ class RegularVerbsCollection {
     required this.stamp,
   });
 
-  String get _dropLast {
-    return stamp.substring(0, stamp.length - 1);
+  static String _dropLast(String verb, {int n = 1}) {
+    return verb.substring(0, n <= verb.length ? verb.length - n : 0);
+  }
+
+  String get _dropLastStamp {
+    return _dropLast(stamp);
   }
 
   bool get regularAl {
@@ -56,7 +60,7 @@ class RegularVerbsCollection {
   }
 
   bool get regularEl {
-    return infinitive.endsWith('ել') && !hasNelSuffix && !hasCNSuffix;
+    return infinitive.endsWith('ել') && !hasNelSuffix && !isCausative;
   }
 
   bool get hasAnalSuffix {
@@ -67,7 +71,7 @@ class RegularVerbsCollection {
     return infinitive.endsWith('նել') || infinitive.endsWith('չել');
   }
 
-  bool get hasCNSuffix {
+  bool get isCausative {
     return infinitive.endsWith('ցնել');
   }
 
@@ -80,11 +84,11 @@ class RegularVerbsCollection {
 
   ImperativeMood get imperativeMood {
     if (hasAnalSuffix) {
-      return (singular: ['$_dropLastցիր'], plural: ['$_dropLastցեք']);
-    } else if (hasCNSuffix) {
-      return (singular: ['$_dropLastրու'], plural: ['$_dropLastրեք']);
+      return (singular: ['$_dropLastStampցիր'], plural: ['$_dropLastStampցեք']);
+    } else if (isCausative) {
+      return (singular: ['$_dropLastStampրու'], plural: ['$_dropLastStampրեք']);
     } else if (hasNelSuffix) {
-      return (singular: ['$_dropLastիր'], plural: ['$_dropLastեք']);
+      return (singular: ['$_dropLastStampիր'], plural: ['$_dropLastStampեք']);
     } else if (regularAl) {
       return _imperativeMoodCollection(stamp).al;
     } else {
@@ -98,6 +102,35 @@ class RegularVerbsCollection {
 
   InflectedVerb get pastContinious {
     return RegularVerbsCollection.mkPast(['$stampում']);
+  }
+
+  InflectedVerb get pastSimple {
+    List<String> f(String regular, String nel, String causativeShort) {
+      if (isCausative) {
+        return [
+          '$_dropLastStampրե$regular',
+          '${_dropLast(stamp, n: 2)}$causativeShort'
+        ];
+      } else if (hasNelSuffix) {
+        return ['$_dropLastStamp$nel'];
+      } else if (hasAnalSuffix) {
+        return ['$_dropLastStampց$nel'];
+      }
+      return ['${_dropLast(infinitive)}$regular'];
+    }
+
+    return (
+      singular: (
+        first: f('ցի', 'ա', 'ցրի'),
+        second: f('ցիր', 'ար', 'ցրիր'),
+        third: f('ց', 'ավ', 'ցրեց'),
+      ),
+      plural: (
+        first: f('ցինք', 'անք', 'ցրինք'),
+        second: f('ցիք', 'աք', 'ցրիք'),
+        third: f('ցին', 'ան', 'ցրին'),
+      ),
+    );
   }
 
   InflectedVerb get futureSimple {

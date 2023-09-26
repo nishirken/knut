@@ -21,6 +21,7 @@ enum Tense {
   imperative,
   present,
   pastContinious,
+  pastSimple,
   futureSimple,
   futureSimpleNegative,
   goingTo,
@@ -32,6 +33,7 @@ class Verb {
   final ImperativeMood imperativeMood;
   final InflectedVerb present;
   final InflectedVerb pastContinious;
+  final InflectedVerb pastSimple;
   final InflectedVerb futureSimple;
   final InflectedVerb futureSimpleNegative;
   final InflectedVerb goingTo;
@@ -42,6 +44,7 @@ class Verb {
     required this.imperativeMood,
     required this.present,
     required this.pastContinious,
+    required this.pastSimple,
     required this.futureSimple,
     required this.futureSimpleNegative,
     required this.goingTo,

@@ -2,7 +2,7 @@ import 'package:namer_app/data/irregular_verbs.dart';
 import 'package:namer_app/data/regular_verbs.dart';
 import 'package:namer_app/data/verb.dart';
 
-Verb getVerb(String rawValue) {
+Verb mkVerb(String rawValue) {
   final effectiveRawValue = rawValue.toLowerCase().trim();
 
   final infinitive = effectiveRawValue;
@@ -19,6 +19,7 @@ Verb getVerb(String rawValue) {
       stamp: stamp,
       imperativeMood: irregular.imperative,
       present: irregular.present,
+      pastSimple: irregular.pastSimple,
       pastContinious: irregular.pastContinious,
       futureSimple: regularVerbs.futureSimple,
       futureSimpleNegative: regularVerbs.futureSimpleNegative,
@@ -32,6 +33,7 @@ Verb getVerb(String rawValue) {
       stamp: stamp,
       imperativeMood: regularVerbs.imperativeMood,
       present: regularVerbs.present,
+      pastSimple: regularVerbs.pastSimple,
       pastContinious: regularVerbs.pastContinious,
       futureSimple: regularVerbs.futureSimple,
       futureSimpleNegative: regularVerbs.futureSimpleNegative,

@@ -8,67 +8,105 @@ void main() {
   group('Regular', () {
     group('Imperative mood', () {
       test('ալ', () {
-        expect(getVerb(regularVerbAl).imperativeMood.singular, ['կարդա']);
-        expect(getVerb(regularVerbAl).imperativeMood.plural, ['կարդացեք']);
+        expect(mkVerb(regularVerbAl).imperativeMood.singular, ['կարդա']);
+        expect(mkVerb(regularVerbAl).imperativeMood.plural, ['կարդացեք']);
       });
 
       test('ել', () {
         expect(
-            getVerb(regularVerbEl).imperativeMood.singular, ['վազիր', 'վազի']);
+            mkVerb(regularVerbEl).imperativeMood.singular, ['վազիր', 'վազի']);
         expect(
-            getVerb(regularVerbEl).imperativeMood.plural, ['վազեք', 'վազեցեք']);
+            mkVerb(regularVerbEl).imperativeMood.plural, ['վազեք', 'վազեցեք']);
       });
 
       test('նել', () {
-        expect(getVerb('թռչել').imperativeMood.singular, ['թռիր']);
-        expect(getVerb('մտնել').imperativeMood.plural, ['մտեք']);
+        expect(mkVerb('թռչել').imperativeMood.singular, ['թռիր']);
+        expect(mkVerb('մտնել').imperativeMood.plural, ['մտեք']);
       });
 
       test('անալ', () {
-        expect(getVerb('հասկանալ').imperativeMood.singular, ['հասկացիր']);
-        expect(getVerb('մոտենալ').imperativeMood.plural, ['մոտեցեք']);
+        expect(mkVerb('հասկանալ').imperativeMood.singular, ['հասկացիր']);
+        expect(mkVerb('մոտենալ').imperativeMood.plural, ['մոտեցեք']);
       });
 
       test('ցնել', () {
-        expect(getVerb('հարցնել').imperativeMood.singular, ['հարցրու']);
-        expect(getVerb('բարձրացնել').imperativeMood.plural, ['բարձրացրեք']);
+        expect(mkVerb('հարցնել').imperativeMood.singular, ['հարցրու']);
+        expect(mkVerb('բարձրացնել').imperativeMood.plural, ['բարձրացրեք']);
       });
     });
 
     test('Present', () {
-      expect(getVerb(regularVerbAl).present.singular.third, ['կարդում է']);
+      expect(mkVerb(regularVerbAl).present.singular.third, ['կարդում է']);
+    });
+
+    test('Past continious', () {
+      expect(
+          mkVerb(regularVerbEl).pastContinious.singular.first, ['վազում էի']);
+      expect(
+          mkVerb(regularVerbAl).pastContinious.singular.third, ['կարդում էր']);
+    });
+
+    group('Past simple', () {
+      test('Regular', () {
+        expect(mkVerb(regularVerbEl).pastSimple.singular.first, ['վազեցի']);
+        expect(mkVerb(regularVerbAl).pastSimple.plural.second, ['կարդացիք']);
+      });
+
+      test('նել չել', () {
+        expect(mkVerb('մտնել').pastSimple.singular.first, ['մտա']);
+        expect(mkVerb('փախչել').pastSimple.plural.second, ['փախաք']);
+      });
+
+      test('Causative', () {
+        expect(mkVerb('ուրախացնել').pastSimple.singular.second,
+            ['ուրախացրեցիր', 'ուրախացրիր']);
+        expect(mkVerb('հարցնել').pastSimple.singular.first,
+            ['հարցրեցի', 'հարցրի']);
+      });
+
+      test('անալ ենալ', () {
+        expect(mkVerb('մոտենալ').pastSimple.singular.first, ['մոտեցա']);
+        expect(mkVerb('ուզենալ').pastSimple.singular.third, ['ուզեցավ']);
+      });
     });
 
     test('Future simple', () {
-      expect(getVerb(regularVerbEl).futureSimple.singular.first, ['կվազեմ']);
-      expect(getVerb(regularVerbAl).futureSimple.singular.third, ['կկարդա']);
+      expect(mkVerb(regularVerbEl).futureSimple.singular.first, ['կվազեմ']);
+      expect(mkVerb(regularVerbAl).futureSimple.singular.third, ['կկարդա']);
     });
 
     test('Future simple negative', () {
-      expect(getVerb(regularVerbEl).futureSimpleNegative.plural.second,
+      expect(mkVerb(regularVerbEl).futureSimpleNegative.plural.second,
           ['չեք վազի']);
-      expect(getVerb(regularVerbAl).futureSimpleNegative.plural.second,
+      expect(mkVerb(regularVerbAl).futureSimpleNegative.plural.second,
           ['չեք կարդա']);
     });
 
     test('Going to', () {
-      expect(getVerb(regularVerbEl).goingTo.singular.first, ['վազելու եմ']);
-      expect(getVerb(regularVerbAl).goingTo.singular.third, ['կարդալու է']);
+      expect(mkVerb(regularVerbEl).goingTo.singular.first, ['վազելու եմ']);
+      expect(mkVerb(regularVerbAl).goingTo.singular.third, ['կարդալու է']);
     });
   });
 
   group('Irregular', () {
     test('Imperative mood', () {
-      expect(getVerb('անել').imperativeMood.singular, ['արա']);
-      expect(getVerb('անել').imperativeMood.plural, ['արեք']);
-      expect(getVerb('գալ').imperativeMood.singular, ['արի']);
-      expect(getVerb('գալ').imperativeMood.plural, ['եկեք']);
+      expect(mkVerb('անել').imperativeMood.singular, ['արա']);
+      expect(mkVerb('անել').imperativeMood.plural, ['արեք']);
+      expect(mkVerb('գալ').imperativeMood.singular, ['արի']);
+      expect(mkVerb('գալ').imperativeMood.plural, ['եկեք']);
     });
 
     test('Present', () {
-      expect(getVerb('գալ').present.singular.first, ['գալիս եմ']);
-      expect(getVerb('կարողանալ').present.plural.third,
+      expect(mkVerb('գալ').present.singular.first, ['գալիս եմ']);
+      expect(mkVerb('կարողանալ').present.plural.third,
           ['կարող են', 'կարողանում են']);
+    });
+
+    test('Past simple', () {
+      expect(mkVerb('գալ').pastSimple.singular.first, ['եկա']);
+      expect(mkVerb('վերադարձնել').pastSimple.singular.first,
+          ['վերադարձրեցի', 'վերադարձրի']);
+      expect(mkVerb('կարողանալ').pastSimple.plural.third, ['կարողացան']);
     });
   });
 }

@@ -54,7 +54,7 @@ class _FormExampleState extends State<VerbsForm> {
   void _submit() {
     Verb? verb;
     try {
-      verb = getVerb(_formKey.currentState?.fields['infinitive']?.value ?? '');
+      verb = mkVerb(_formKey.currentState?.fields['infinitive']?.value ?? '');
     } catch (e) {
       verb = null;
     }
@@ -70,7 +70,7 @@ class _FormExampleState extends State<VerbsForm> {
   String? _verbValidator(String? value) {
     try {
       if (value != null) {
-        getVerb(value);
+        mkVerb(value);
       }
     } catch (e) {
       return "Invalid value";
@@ -206,6 +206,8 @@ class _FormExampleState extends State<VerbsForm> {
                           title: 'Imperative mood'),
                     if (_fieldsEnabled[Tense.present] == true)
                       _inflectedVerb(Tense.present, _verb?.present),
+                    if (_fieldsEnabled[Tense.pastSimple] == true)
+                      _inflectedVerb(Tense.pastSimple, _verb?.pastSimple),
                     if (_fieldsEnabled[Tense.pastContinious] == true)
                       _inflectedVerb(
                           Tense.pastContinious, _verb?.pastContinious),

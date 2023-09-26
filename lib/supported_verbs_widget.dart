@@ -6,7 +6,7 @@ import 'package:namer_app/keys.dart';
 
 class SupportedVerbsWidget extends StatefulWidget {
   final Irregular irregularVerbs =
-      IrregularVerbsCollection(infinitive: '', stamp: '').collection;
+      IrregularVerbsCollection(infinitive: 'ասել', stamp: 'ասել').collection;
 
   SupportedVerbsWidget({
     super.key,
