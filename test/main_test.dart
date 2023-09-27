@@ -8,7 +8,7 @@ void main() {
   const emptyErrorMessage = 'This field cannot be empty.';
 
   Future prepare(WidgetTester tester) async {
-    await tester.binding.setSurfaceSize(const Size(2800, 1800));
+    await tester.binding.setSurfaceSize(const Size(2800, 2400));
 
     await tester.pumpWidget(const KnutApp());
   }

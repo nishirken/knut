@@ -39,6 +39,32 @@ void main() {
       expect(mkVerb(regularVerbAl).present.singular.third, ['կարդում է']);
     });
 
+    group('Present perfect', () {
+      test('Regular', () {
+        expect(
+            mkVerb(regularVerbEl).presentPerfect.singular.first, ['վազել եմ']);
+        expect(mkVerb(regularVerbAl).presentPerfect.singular.first,
+            ['կարդացել եմ']);
+      });
+
+      test('նել չել', () {
+        expect(mkVerb('մտնել').presentPerfect.singular.first, ['մտել եմ']);
+        expect(mkVerb('փախչել').presentPerfect.singular.first, ['փախել եմ']);
+      });
+
+      test('Causative', () {
+        expect(mkVerb('ուրախացնել').presentPerfect.singular.first,
+            ['ուրախացրել եմ']);
+        expect(mkVerb('հարցնել').presentPerfect.singular.first, ['հարցրել եմ']);
+      });
+
+      test('անալ ենալ', () {
+        expect(mkVerb('ունենալ').presentPerfect.singular.first, ['ունեցել եմ']);
+        expect(mkVerb('ուրախանալ').presentPerfect.singular.first,
+            ['ուրախացել եմ']);
+      });
+    });
+
     test('Past continious', () {
       expect(
           mkVerb(regularVerbEl).pastContinious.singular.first, ['վազում էի']);
@@ -68,6 +94,12 @@ void main() {
         expect(mkVerb('մոտենալ').pastSimple.singular.first, ['մոտեցա']);
         expect(mkVerb('ուզենալ').pastSimple.singular.third, ['ուզեցավ']);
       });
+    });
+
+    test('Past perfect', () {
+      expect(mkVerb(regularVerbEl).pastPerfect.singular.first, ['վազել էի']);
+      expect(mkVerb('կարդալ').pastPerfect.singular.first, ['կարդացել էի']);
+      expect(mkVerb('մոռանալ').pastPerfect.singular.third, ['մոռացել էր']);
     });
 
     test('Future simple', () {
@@ -107,6 +139,16 @@ void main() {
       expect(mkVerb('վերադարձնել').pastSimple.singular.first,
           ['վերադարձրեցի', 'վերադարձրի']);
       expect(mkVerb('կարողանալ').pastSimple.plural.third, ['կարողացան']);
+    });
+
+    test('Present perfect', () {
+      expect(mkVerb('լինել').presentPerfect.singular.first, ['եղել եմ']);
+      expect(mkVerb('գալ').presentPerfect.plural.first, ['եկել ենք']);
+      expect(mkVerb('տալ').presentPerfect.singular.first, ['տվել եմ']);
+    });
+
+    test('Past perfect', () {
+      expect(mkVerb('գալ').pastPerfect.singular.first, ['եկել էի']);
     });
   });
 }

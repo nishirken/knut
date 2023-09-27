@@ -37,6 +37,8 @@ class _FormExampleState extends State<VerbsForm> {
     Tense.imperative: true,
     Tense.present: true,
     Tense.pastContinious: true,
+    Tense.pastPerfect: true,
+    Tense.presentPerfect: true,
     Tense.futureSimple: true,
     Tense.futureSimpleNegative: true,
     Tense.goingTo: true,
@@ -45,7 +47,9 @@ class _FormExampleState extends State<VerbsForm> {
     Tense.infinitive: 'Infinitive',
     Tense.imperative: 'Imperative mood',
     Tense.present: 'Present',
+    Tense.presentPerfect: 'Present perfect',
     Tense.pastContinious: 'Past continious',
+    Tense.pastPerfect: 'Past perfect',
     Tense.futureSimple: 'Future simple',
     Tense.futureSimpleNegative: 'Future simple negative',
     Tense.goingTo: 'Going to',
@@ -139,26 +143,29 @@ class _FormExampleState extends State<VerbsForm> {
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
               child: SizedBox(
                 width: 250,
-                child: Column(children: [
-                  Expanded(
-                    child: ListView.builder(
-                        padding: const EdgeInsets.all(8),
-                        itemCount: fields.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return CheckboxListTile(
-                              key: keys.inputsBlockCheckbox(fields[index].key),
-                              title: Text(titles[fields[index].key]!),
-                              value: fields[index].value,
-                              onChanged: (changed) {
-                                setState(() {
-                                  _fieldsEnabled[fields[index].key] =
-                                      changed ?? fields[index].value;
-                                });
-                              });
-                        }),
-                  ),
-                  SupportedVerbsWidget(),
-                ]),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                            padding: const EdgeInsets.all(8),
+                            itemCount: fields.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return CheckboxListTile(
+                                  key: keys
+                                      .inputsBlockCheckbox(fields[index].key),
+                                  title: Text(titles[fields[index].key]!),
+                                  value: fields[index].value,
+                                  onChanged: (changed) {
+                                    setState(() {
+                                      _fieldsEnabled[fields[index].key] =
+                                          changed ?? fields[index].value;
+                                    });
+                                  });
+                            }),
+                      ),
+                      SupportedVerbsWidget(),
+                    ]),
               ),
             ),
             Container(
@@ -211,6 +218,11 @@ class _FormExampleState extends State<VerbsForm> {
                     if (_fieldsEnabled[Tense.pastContinious] == true)
                       _inflectedVerb(
                           Tense.pastContinious, _verb?.pastContinious),
+                    if (_fieldsEnabled[Tense.presentPerfect] == true)
+                      _inflectedVerb(
+                          Tense.presentPerfect, _verb?.presentPerfect),
+                    if (_fieldsEnabled[Tense.pastPerfect] == true)
+                      _inflectedVerb(Tense.pastPerfect, _verb?.pastPerfect),
                     if (_fieldsEnabled[Tense.futureSimple] == true)
                       _inflectedVerb(Tense.futureSimple, _verb?.futureSimple),
                     if (_fieldsEnabled[Tense.futureSimpleNegative] == true)

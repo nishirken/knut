@@ -63,8 +63,16 @@ class RegularVerbsCollection {
     return infinitive.endsWith('ել') && !hasNelSuffix && !isCausative;
   }
 
+  bool get hasAnSuffix {
+    return infinitive.endsWith('անալ');
+  }
+
+  bool get hasEnSuffix {
+    return infinitive.endsWith('ենալ');
+  }
+
   bool get hasAnalSuffix {
-    return infinitive.endsWith('անալ') || infinitive.endsWith('ենալ');
+    return hasAnSuffix || hasEnSuffix;
   }
 
   bool get hasNelSuffix {
@@ -131,6 +139,28 @@ class RegularVerbsCollection {
         third: f('ցին', 'ան', 'ցրին'),
       ),
     );
+  }
+
+  List<String> get _perfectBase {
+    if (isCausative) {
+      return ['$_dropLastStampրել'];
+    } else if (hasNelSuffix) {
+      return ['$_dropLastStampել'];
+    } else if (hasAnalSuffix) {
+      return ['$_dropLastStampցել'];
+    } else if (regularAl) {
+      return ['${_dropLast(infinitive)}ցել'];
+    } else {
+      return [infinitive];
+    }
+  }
+
+  InflectedVerb get presentPerfect {
+    return mkPresent(_perfectBase);
+  }
+
+  InflectedVerb get pastPerfect {
+    return mkPast(_perfectBase);
   }
 
   InflectedVerb get futureSimple {
