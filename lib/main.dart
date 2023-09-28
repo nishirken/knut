@@ -42,6 +42,9 @@ class _FormExampleState extends State<VerbsForm> {
     Tense.futureSimple: true,
     Tense.futureSimpleNegative: true,
     Tense.goingTo: true,
+    Tense.effectiveParticiple: true,
+    Tense.subjectiveParticiple: true,
+    Tense.presentParticiple: true,
   };
   final Map<Tense, String> titles = {
     Tense.infinitive: 'Infinitive',
@@ -53,6 +56,9 @@ class _FormExampleState extends State<VerbsForm> {
     Tense.futureSimple: 'Future simple',
     Tense.futureSimpleNegative: 'Future simple negative',
     Tense.goingTo: 'Going to',
+    Tense.effectiveParticiple: 'Effective participle (հարակատար դերբայ)',
+    Tense.subjectiveParticiple: 'Subjective participle (Ենթակայական դերբայ)',
+    Tense.presentParticiple: 'Present participle (Համակատար դերբայ)',
   };
 
   void _submit() {
@@ -144,7 +150,7 @@ class _FormExampleState extends State<VerbsForm> {
               child: SizedBox(
                 width: 250,
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
                         child: ListView.builder(
@@ -230,6 +236,54 @@ class _FormExampleState extends State<VerbsForm> {
                           _verb?.futureSimpleNegative),
                     if (_fieldsEnabled[Tense.goingTo] == true)
                       _inflectedVerb(Tense.goingTo, _verb?.goingTo),
+                    if (_fieldsEnabled[Tense.effectiveParticiple] == true)
+                      InputsBlockWidget(
+                          validate: _verb != null,
+                          fields: (
+                            [
+                              (
+                                name: 'effective-participle',
+                                hintText: 'Enter effective participle',
+                                equalValues: _verb?.effectiveParticiple != null
+                                    ? [_verb!.effectiveParticiple]
+                                    : null,
+                              )
+                            ],
+                            [],
+                          ),
+                          title: titles[Tense.effectiveParticiple]!),
+                    if (_fieldsEnabled[Tense.subjectiveParticiple] == true)
+                      InputsBlockWidget(
+                          validate: _verb != null,
+                          fields: (
+                            [
+                              (
+                                name: 'subjective-participle',
+                                hintText: 'Enter subjective participle',
+                                equalValues: _verb?.subjectiveParticiple != null
+                                    ? [_verb!.subjectiveParticiple]
+                                    : null,
+                              )
+                            ],
+                            []
+                          ),
+                          title: titles[Tense.subjectiveParticiple]!),
+                    if (_fieldsEnabled[Tense.presentParticiple] == true)
+                      InputsBlockWidget(
+                          validate: _verb != null,
+                          fields: (
+                            [
+                              (
+                                name: 'present-participle',
+                                hintText: 'Enter present participle',
+                                equalValues: _verb?.presentParticiple != null
+                                    ? [_verb!.presentParticiple]
+                                    : null,
+                              )
+                            ],
+                            []
+                          ),
+                          title: titles[Tense.presentParticiple]!),
                     Padding(
                       padding: _verticalPadding,
                       child: ElevatedButton(

@@ -55,12 +55,20 @@ class RegularVerbsCollection {
     return _dropLast(stamp);
   }
 
+  bool get hasElEnding {
+    return infinitive.endsWith('ել');
+  }
+
+  bool get hasAlEnding {
+    return infinitive.endsWith('ալ');
+  }
+
   bool get regularAl {
-    return infinitive.endsWith('ալ') && !hasAnalSuffix;
+    return hasAlEnding && !hasAnalSuffix;
   }
 
   bool get regularEl {
-    return infinitive.endsWith('ել') && !hasNelSuffix && !isCausative;
+    return hasElEnding && !hasNelSuffix && !isCausative;
   }
 
   bool get hasAnSuffix {
@@ -202,21 +210,30 @@ class RegularVerbsCollection {
   }
 
   InflectedVerb get goingTo {
-    List<String> f(String face) {
-      return ['$infinitiveու $face'];
-    }
+    return mkPresent(['$infinitiveու']);
+  }
 
-    return (
-      singular: (
-        first: f('եմ'),
-        second: f('ես'),
-        third: f('է'),
-      ),
-      plural: (
-        first: f('ենք'),
-        second: f('եք'),
-        third: f('են'),
-      ),
-    );
+  String get effectiveParticiple {
+    if (isCausative) {
+      return '$_dropLastStampրած';
+    } else if (regularEl) {
+      return '$stampած';
+    } else {
+      return '${pastSimple.singular.third[0]}ած';
+    }
+  }
+
+  String get subjectiveParticiple {
+    if (hasElEnding) {
+      return '$stampող';
+    } else if (hasAnalSuffix) {
+      return '$_dropLastStampցող';
+    } else {
+      return '${pastSimple.singular.third[0]}ող';
+    }
+  }
+
+  String get presentParticiple {
+    return '$infinitiveիս';
   }
 }

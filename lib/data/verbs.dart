@@ -26,6 +26,9 @@ Verb mkVerb(String rawValue) {
       futureSimple: regularVerbs.futureSimple,
       futureSimpleNegative: regularVerbs.futureSimpleNegative,
       goingTo: regularVerbs.goingTo,
+      effectiveParticiple: regularVerbs.effectiveParticiple,
+      subjectiveParticiple: regularVerbs.subjectiveParticiple,
+      presentParticiple: regularVerbs.presentParticiple,
     );
   } else if (effectiveRawValue.length < 4) {
     throw AssertionError();
@@ -42,6 +45,9 @@ Verb mkVerb(String rawValue) {
       futureSimple: regularVerbs.futureSimple,
       futureSimpleNegative: regularVerbs.futureSimpleNegative,
       goingTo: regularVerbs.goingTo,
+      effectiveParticiple: regularVerbs.effectiveParticiple,
+      subjectiveParticiple: regularVerbs.subjectiveParticiple,
+      presentParticiple: regularVerbs.presentParticiple,
     );
   }
 }

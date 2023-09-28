@@ -28,6 +28,9 @@ enum Tense {
   futureSimple,
   futureSimpleNegative,
   goingTo,
+  effectiveParticiple,
+  subjectiveParticiple,
+  presentParticiple,
 }
 
 class Verb {
@@ -42,6 +45,9 @@ class Verb {
   final InflectedVerb futureSimple;
   final InflectedVerb futureSimpleNegative;
   final InflectedVerb goingTo;
+  final String effectiveParticiple;
+  final String subjectiveParticiple;
+  final String presentParticiple;
 
   Verb({
     required this.infinitive,
@@ -55,5 +61,8 @@ class Verb {
     required this.futureSimple,
     required this.futureSimpleNegative,
     required this.goingTo,
+    required this.effectiveParticiple,
+    required this.subjectiveParticiple,
+    required this.presentParticiple,
   });
 }

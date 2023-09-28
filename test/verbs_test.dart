@@ -118,6 +118,27 @@ void main() {
       expect(mkVerb(regularVerbEl).goingTo.singular.first, ['վազելու եմ']);
       expect(mkVerb(regularVerbAl).goingTo.singular.third, ['կարդալու է']);
     });
+
+    test('Effective participle', () {
+      expect(mkVerb(regularVerbEl).effectiveParticiple, 'վազած');
+      expect(mkVerb(regularVerbAl).effectiveParticiple, 'կարդացած');
+      expect(mkVerb('մոտեցնել').effectiveParticiple, 'մոտեցրած');
+      expect(mkVerb('զարմացնել').effectiveParticiple, 'զարմացրած');
+      expect(mkVerb('կուտակվել').effectiveParticiple, 'կուտակված');
+      expect(mkVerb('դրվել').effectiveParticiple, 'դրված');
+    });
+
+    test('Subjective participle', () {
+      expect(mkVerb(regularVerbEl).subjectiveParticiple, 'վազող');
+      expect(mkVerb(regularVerbAl).subjectiveParticiple, 'կարդացող');
+      expect(mkVerb('հասկանալ').subjectiveParticiple, 'հասկացող');
+      expect(mkVerb('պահվել').subjectiveParticiple, 'պահվող');
+    });
+
+    test('Present participle', () {
+      expect(mkVerb('կարդալ').presentParticiple, 'կարդալիս');
+      expect(mkVerb('պատրաստել').presentParticiple, 'պատրաստելիս');
+    });
   });
 
   group('Irregular', () {
@@ -149,6 +170,10 @@ void main() {
 
     test('Past perfect', () {
       expect(mkVerb('գալ').pastPerfect.singular.first, ['եկել էի']);
+    });
+
+    test('Subjective participle', () {
+      expect(mkVerb('ասել').subjectiveParticiple, 'ասող');
     });
   });
 }
