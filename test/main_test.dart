@@ -3,14 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:namer_app/models/verb/verb.dart';
 import 'package:namer_app/keys.dart';
 import 'package:namer_app/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   const emptyErrorMessage = 'This field cannot be empty.';
 
   Future prepare(WidgetTester tester, [Key? scaffoldKey]) async {
     await tester.binding.setSurfaceSize(const Size(3000, 1080));
-
-    await tester.pumpWidget(appWithProvider(scaffoldKey));
+    SharedPreferences.setMockInitialValues({});
+    final app = await appWithProvider(scaffoldKey);
+    await tester.pumpWidget(app);
   }
 
   testWidgets('Shows an empty error of the main verb', (tester) async {

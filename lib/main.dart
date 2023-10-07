@@ -8,13 +8,22 @@ import 'package:namer_app/inputs_block_widget.dart';
 import 'package:namer_app/keys.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './drawer.dart';
 
-void main() => runApp(appWithProvider());
+void main() async {
+  final app = await appWithProvider();
+  runApp(app);
+}
 
-MultiProvider appWithProvider([Key? scaffoldKey]) {
+Future<MultiProvider> appWithProvider([Key? scaffoldKey]) async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+
   return MultiProvider(
-    providers: [ChangeNotifierProvider(create: (c) => EnabledTenses())],
+    providers: [
+      ChangeNotifierProvider(
+          create: (c) => EnabledTenses(sharedPreferences: sharedPreferences))
+    ],
     child: KnutApp(scaffoldKey: scaffoldKey),
   );
 }
