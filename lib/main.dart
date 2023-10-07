@@ -1,22 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/data/verb.dart';
+import 'package:namer_app/const.dart';
+import 'package:namer_app/models/enabled_tenses.dart';
+import 'package:namer_app/models/verb/verb.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:namer_app/data/verbs.dart';
+import 'package:namer_app/models/verb/verbs.dart';
 import 'package:namer_app/inputs_block_widget.dart';
 import 'package:namer_app/keys.dart';
-import 'package:namer_app/supported_verbs_widget.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:provider/provider.dart';
+import './drawer.dart';
 
-void main() => runApp(const KnutApp());
+void main() => runApp(appWithProvider());
+
+MultiProvider appWithProvider([Key? scaffoldKey]) {
+  return MultiProvider(
+    providers: [ChangeNotifierProvider(create: (c) => EnabledTenses())],
+    child: KnutApp(scaffoldKey: scaffoldKey),
+  );
+}
 
 class KnutApp extends StatelessWidget {
-  const KnutApp({super.key});
+  final Key? scaffoldKey;
+
+  const KnutApp({this.scaffoldKey, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
-        body: VerbsForm(),
+        key: scaffoldKey,
+        appBar: AppBar(title: const Text("Hello")),
+        body: const VerbsForm(),
+        drawer: const AppDrawer(),
       ),
     );
   }
@@ -33,33 +48,6 @@ class _FormExampleState extends State<VerbsForm> {
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
   final _verticalPadding = const EdgeInsets.symmetric(vertical: 16.0);
   Verb? _verb;
-  final Map<Tense, bool> _fieldsEnabled = {
-    Tense.imperative: true,
-    Tense.present: true,
-    Tense.pastContinious: true,
-    Tense.pastPerfect: true,
-    Tense.presentPerfect: true,
-    Tense.futureSimple: true,
-    Tense.futureSimpleNegative: true,
-    Tense.goingTo: true,
-    Tense.effectiveParticiple: true,
-    Tense.subjectiveParticiple: true,
-    Tense.presentParticiple: true,
-  };
-  final Map<Tense, String> titles = {
-    Tense.infinitive: 'Infinitive',
-    Tense.imperative: 'Imperative mood',
-    Tense.present: 'Present',
-    Tense.presentPerfect: 'Present perfect',
-    Tense.pastContinious: 'Past continious',
-    Tense.pastPerfect: 'Past perfect',
-    Tense.futureSimple: 'Future simple',
-    Tense.futureSimpleNegative: 'Future simple negative',
-    Tense.goingTo: 'Going to',
-    Tense.effectiveParticiple: 'Effective participle (հարակատար դերբայ)',
-    Tense.subjectiveParticiple: 'Subjective participle (Ենթակայական դերբայ)',
-    Tense.presentParticiple: 'Present participle (Համակատար դերբայ)',
-  };
 
   void _submit() {
     Verb? verb;
@@ -136,167 +124,128 @@ class _FormExampleState extends State<VerbsForm> {
 
   @override
   Widget build(BuildContext context) {
-    final fields = _fieldsEnabled.entries.toList();
     return FormBuilder(
       key: _formKey,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-              child: SizedBox(
-                width: 250,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                            padding: const EdgeInsets.all(8),
-                            itemCount: fields.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return CheckboxListTile(
-                                  key: keys
-                                      .inputsBlockCheckbox(fields[index].key),
-                                  title: Text(titles[fields[index].key]!),
-                                  value: fields[index].value,
-                                  onChanged: (changed) {
-                                    setState(() {
-                                      _fieldsEnabled[fields[index].key] =
-                                          changed ?? fields[index].value;
-                                    });
-                                  });
-                            }),
-                      ),
-                      SupportedVerbsWidget(),
+        child: Consumer<EnabledTenses>(
+          builder: (context, tenses, child) => SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InputsBlockWidget(
+                    validate: true,
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                      _verbValidator,
                     ]),
-              ),
-            ),
-            Container(
-              constraints: const BoxConstraints(maxWidth: 800),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InputsBlockWidget(
-                        validate: true,
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                          _verbValidator,
-                        ]),
-                        fields: (
-                          [
-                            (
-                              name: 'infinitive',
-                              hintText: 'Enter the infinitive',
-                              equalValues: null,
-                            )
-                          ],
-                          []
-                        ),
-                        title: titles[Tense.infinitive]!),
-                    if (_fieldsEnabled[Tense.imperative] == true)
-                      InputsBlockWidget(
-                          validate: _validate,
-                          fields: (
-                            [
-                              (
-                                name: 'imperative-singular',
-                                hintText: 'singular',
-                                equalValues: _verb?.imperativeMood.singular,
-                              )
-                            ],
-                            [
-                              (
-                                name: 'imperative-plural',
-                                hintText: 'plural',
-                                equalValues: _verb?.imperativeMood.plural,
-                              )
-                            ]
-                          ),
-                          title: 'Imperative mood'),
-                    if (_fieldsEnabled[Tense.present] == true)
-                      _inflectedVerb(Tense.present, _verb?.present),
-                    if (_fieldsEnabled[Tense.pastSimple] == true)
-                      _inflectedVerb(Tense.pastSimple, _verb?.pastSimple),
-                    if (_fieldsEnabled[Tense.pastContinious] == true)
-                      _inflectedVerb(
-                          Tense.pastContinious, _verb?.pastContinious),
-                    if (_fieldsEnabled[Tense.presentPerfect] == true)
-                      _inflectedVerb(
-                          Tense.presentPerfect, _verb?.presentPerfect),
-                    if (_fieldsEnabled[Tense.pastPerfect] == true)
-                      _inflectedVerb(Tense.pastPerfect, _verb?.pastPerfect),
-                    if (_fieldsEnabled[Tense.futureSimple] == true)
-                      _inflectedVerb(Tense.futureSimple, _verb?.futureSimple),
-                    if (_fieldsEnabled[Tense.futureSimpleNegative] == true)
-                      _inflectedVerb(Tense.futureSimpleNegative,
-                          _verb?.futureSimpleNegative),
-                    if (_fieldsEnabled[Tense.goingTo] == true)
-                      _inflectedVerb(Tense.goingTo, _verb?.goingTo),
-                    if (_fieldsEnabled[Tense.effectiveParticiple] == true)
-                      InputsBlockWidget(
-                          validate: _verb != null,
-                          fields: (
-                            [
-                              (
-                                name: 'effective-participle',
-                                hintText: 'Enter effective participle',
-                                equalValues: _verb?.effectiveParticiple != null
-                                    ? [_verb!.effectiveParticiple]
-                                    : null,
-                              )
-                            ],
-                            [],
-                          ),
-                          title: titles[Tense.effectiveParticiple]!),
-                    if (_fieldsEnabled[Tense.subjectiveParticiple] == true)
-                      InputsBlockWidget(
-                          validate: _verb != null,
-                          fields: (
-                            [
-                              (
-                                name: 'subjective-participle',
-                                hintText: 'Enter subjective participle',
-                                equalValues: _verb?.subjectiveParticiple != null
-                                    ? [_verb!.subjectiveParticiple]
-                                    : null,
-                              )
-                            ],
-                            []
-                          ),
-                          title: titles[Tense.subjectiveParticiple]!),
-                    if (_fieldsEnabled[Tense.presentParticiple] == true)
-                      InputsBlockWidget(
-                          validate: _verb != null,
-                          fields: (
-                            [
-                              (
-                                name: 'present-participle',
-                                hintText: 'Enter present participle',
-                                equalValues: _verb?.presentParticiple != null
-                                    ? [_verb!.presentParticiple]
-                                    : null,
-                              )
-                            ],
-                            []
-                          ),
-                          title: titles[Tense.presentParticiple]!),
-                    Padding(
-                      padding: _verticalPadding,
-                      child: ElevatedButton(
-                        key: keys.submitButton,
-                        onPressed: _submit,
-                        child: const Text('Check'),
-                      ),
+                    fields: (
+                      [
+                        (
+                          name: 'infinitive',
+                          hintText: 'Enter the infinitive',
+                          equalValues: null,
+                        )
+                      ],
+                      []
                     ),
-                  ],
+                    title: titles[Tense.infinitive]!),
+                if (tenses.getValue(Tense.imperative))
+                  InputsBlockWidget(
+                      validate: _validate,
+                      fields: (
+                        [
+                          (
+                            name: 'imperative-singular',
+                            hintText: 'singular',
+                            equalValues: _verb?.imperativeMood.singular,
+                          )
+                        ],
+                        [
+                          (
+                            name: 'imperative-plural',
+                            hintText: 'plural',
+                            equalValues: _verb?.imperativeMood.plural,
+                          )
+                        ]
+                      ),
+                      title: 'Imperative mood'),
+                if (tenses.getValue(Tense.present))
+                  _inflectedVerb(Tense.present, _verb?.present),
+                if (tenses.getValue(Tense.pastSimple))
+                  _inflectedVerb(Tense.pastSimple, _verb?.pastSimple),
+                if (tenses.getValue(Tense.pastContinious))
+                  _inflectedVerb(Tense.pastContinious, _verb?.pastContinious),
+                if (tenses.getValue(Tense.presentPerfect))
+                  _inflectedVerb(Tense.presentPerfect, _verb?.presentPerfect),
+                if (tenses.getValue(Tense.pastPerfect))
+                  _inflectedVerb(Tense.pastPerfect, _verb?.pastPerfect),
+                if (tenses.getValue(Tense.futureSimple))
+                  _inflectedVerb(Tense.futureSimple, _verb?.futureSimple),
+                if (tenses.getValue(Tense.futureSimpleNegative))
+                  _inflectedVerb(
+                      Tense.futureSimpleNegative, _verb?.futureSimpleNegative),
+                if (tenses.getValue(Tense.goingTo))
+                  _inflectedVerb(Tense.goingTo, _verb?.goingTo),
+                if (tenses.getValue(Tense.effectiveParticiple))
+                  InputsBlockWidget(
+                      validate: _verb != null,
+                      fields: (
+                        [
+                          (
+                            name: 'effective-participle',
+                            hintText: 'Enter effective participle',
+                            equalValues: _verb?.effectiveParticiple != null
+                                ? [_verb!.effectiveParticiple]
+                                : null,
+                          )
+                        ],
+                        [],
+                      ),
+                      title: titles[Tense.effectiveParticiple]!),
+                if (tenses.getValue(Tense.subjectiveParticiple))
+                  InputsBlockWidget(
+                      validate: _verb != null,
+                      fields: (
+                        [
+                          (
+                            name: 'subjective-participle',
+                            hintText: 'Enter subjective participle',
+                            equalValues: _verb?.subjectiveParticiple != null
+                                ? [_verb!.subjectiveParticiple]
+                                : null,
+                          )
+                        ],
+                        []
+                      ),
+                      title: titles[Tense.subjectiveParticiple]!),
+                if (tenses.getValue(Tense.presentParticiple))
+                  InputsBlockWidget(
+                      validate: _verb != null,
+                      fields: (
+                        [
+                          (
+                            name: 'present-participle',
+                            hintText: 'Enter present participle',
+                            equalValues: _verb?.presentParticiple != null
+                                ? [_verb!.presentParticiple]
+                                : null,
+                          )
+                        ],
+                        []
+                      ),
+                      title: titles[Tense.presentParticiple]!),
+                Padding(
+                  padding: _verticalPadding,
+                  child: ElevatedButton(
+                    key: keys.submitButton,
+                    onPressed: _submit,
+                    child: const Text('Check'),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

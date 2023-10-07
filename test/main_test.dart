@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:namer_app/data/verb.dart';
+import 'package:namer_app/models/verb/verb.dart';
 import 'package:namer_app/keys.dart';
 import 'package:namer_app/main.dart';
 
 void main() {
   const emptyErrorMessage = 'This field cannot be empty.';
 
-  Future prepare(WidgetTester tester) async {
-    await tester.binding.setSurfaceSize(const Size(2800, 2400));
+  Future prepare(WidgetTester tester, [Key? scaffoldKey]) async {
+    await tester.binding.setSurfaceSize(const Size(3000, 1080));
 
-    await tester.pumpWidget(const KnutApp());
+    await tester.pumpWidget(appWithProvider(scaffoldKey));
   }
 
   testWidgets('Shows an empty error of the main verb', (tester) async {
@@ -19,6 +19,7 @@ void main() {
     final infinitiveInput = find.byKey(keys.verbInput('infinitive'));
     final submitButton = find.byKey(keys.submitButton);
 
+    await tester.ensureVisible(submitButton);
     await tester.tap(submitButton);
 
     await tester.pumpAndSettle();
@@ -35,7 +36,9 @@ void main() {
     final infinitiveInput = find.byKey(keys.verbInput('infinitive'));
     final submitButton = find.byKey(keys.submitButton);
 
+    await tester.ensureVisible(infinitiveInput);
     await tester.enterText(infinitiveInput, 'աս');
+    await tester.ensureVisible(submitButton);
     await tester.tap(submitButton);
 
     await tester.pumpAndSettle();
@@ -54,6 +57,7 @@ void main() {
     final imperativeInput = find.byKey(keys.verbInput('imperative-singular'));
     final submitButton = find.byKey(keys.submitButton);
 
+    await tester.ensureVisible(submitButton);
     await tester.tap(submitButton);
 
     await tester.pumpAndSettle();
@@ -73,7 +77,9 @@ void main() {
     final imperativeInput = find.byKey(keys.verbInput('imperative-singular'));
     final submitButton = find.byKey(keys.submitButton);
 
+    await tester.ensureVisible(infinitiveInput);
     await tester.enterText(infinitiveInput, 'ասել');
+    await tester.ensureVisible(submitButton);
     await tester.tap(submitButton);
 
     await tester.pumpAndSettle();
@@ -95,7 +101,9 @@ void main() {
         find.byKey(keys.verbInput('${Tense.present}-singular-first'));
     final submitButton = find.byKey(keys.submitButton);
 
+    await tester.ensureVisible(infinitiveInput);
     await tester.enterText(infinitiveInput, 'ասել');
+    await tester.ensureVisible(submitButton);
     await tester.tap(submitButton);
 
     await tester.pumpAndSettle();
@@ -119,9 +127,14 @@ void main() {
         find.byKey(keys.verbInput('${Tense.present}-singular-first'));
     final submitButton = find.byKey(keys.submitButton);
 
+    await tester.ensureVisible(infinitiveInput);
     await tester.enterText(infinitiveInput, 'ասել');
     await tester.enterText(imperativeInput, 'ա');
+
+    await tester.ensureVisible(presentInput);
     await tester.enterText(presentInput, 'ա');
+
+    await tester.ensureVisible(submitButton);
     await tester.tap(submitButton);
 
     await tester.pumpAndSettle();
@@ -144,9 +157,19 @@ void main() {
   });
 
   testWidgets('An inputs block is disabled by a checkbox', (tester) async {
-    await prepare(tester);
+    final scaffoldKey = GlobalKey<ScaffoldState>();
+    await prepare(tester, scaffoldKey);
 
-    await tester.tap(find.byKey(keys.inputsBlockCheckbox(Tense.imperative)));
+    scaffoldKey.currentState?.openDrawer();
+
+    await tester.pumpAndSettle();
+
+    final imperativeCheckbox =
+        find.byKey(keys.inputsBlockCheckbox(Tense.imperative));
+
+    await tester.ensureVisible(imperativeCheckbox);
+    await tester.tap(imperativeCheckbox);
+    scaffoldKey.currentState?.closeDrawer();
 
     await tester.pumpAndSettle();
 
@@ -154,22 +177,41 @@ void main() {
   });
 
   testWidgets('Shows that verb is supported', (tester) async {
-    await prepare(tester);
+    final scaffoldKey = GlobalKey<ScaffoldState>();
+    await prepare(tester, scaffoldKey);
 
-    await tester.enterText(find.byKey(keys.supportedVerbInput), 'ասել');
-    await tester.tap(find.byKey(keys.supportedVerbButton));
+    scaffoldKey.currentState?.openDrawer();
+
+    await tester.pumpAndSettle();
+
+    final supportedVerbsInput = find.byKey(keys.supportedVerbInput);
+    final supportedVerbsButton = find.byKey(keys.supportedVerbButton);
+
+    await tester.ensureVisible(supportedVerbsInput);
+    await tester.enterText(supportedVerbsInput, 'ասել');
+
+    await tester.ensureVisible(supportedVerbsButton);
+    await tester.tap(supportedVerbsButton);
+
     await tester.pumpAndSettle();
 
     expect(find.byKey(keys.supportedVerbIcon(Icons.done)), findsOneWidget);
 
-    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await tester
+        .pumpAndSettle(const Duration(seconds: 1)); // wait for pending timeout
   });
 
   testWidgets('Shows that verb is not supported', (tester) async {
-    await prepare(tester);
+    final scaffoldKey = GlobalKey<ScaffoldState>();
+    await prepare(tester, scaffoldKey);
+
+    scaffoldKey.currentState?.openDrawer();
+
+    await tester.pumpAndSettle();
 
     await tester.enterText(find.byKey(keys.supportedVerbInput), 'կարդալ');
     await tester.tap(find.byKey(keys.supportedVerbButton));
+
     await tester.pumpAndSettle();
 
     expect(find.byKey(keys.supportedVerbIcon(Icons.close)), findsOneWidget);

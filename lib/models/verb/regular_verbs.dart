@@ -1,4 +1,4 @@
-import 'package:namer_app/data/verb.dart';
+import 'package:namer_app/models/verb/verb.dart';
 
 class RegularVerbsCollection {
   final String infinitive;

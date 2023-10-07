@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/data/verb.dart';
+import 'package:namer_app/models/verb/verb.dart';
 
 final keys = (
+  drawer: const Key('drawer'),
   submitButton: const Key('submit button'),
   verbInput: (String name) => Key('input-$name'),
   inputsBlock: (String title) => Key("inputs-$title"),

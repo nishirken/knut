@@ -1,4 +1,4 @@
-import 'package:namer_app/data/verbs.dart';
+import 'package:namer_app/models/verb/verbs.dart';
 import 'package:test/test.dart';
 
 void main() {

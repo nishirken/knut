@@ -1,6 +1,6 @@
-import 'package:namer_app/data/irregular_verbs.dart';
-import 'package:namer_app/data/regular_verbs.dart';
-import 'package:namer_app/data/verb.dart';
+import 'package:namer_app/models/verb/irregular_verbs.dart';
+import 'package:namer_app/models/verb/regular_verbs.dart';
+import 'package:namer_app/models/verb/verb.dart';
 
 Verb mkVerb(String rawValue) {
   final effectiveRawValue = rawValue.toLowerCase().trim();

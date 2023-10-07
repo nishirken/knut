@@ -24,7 +24,6 @@ enum Tense {
   pastSimple,
   presentPerfect,
   pastPerfect,
-  presentPast,
   futureSimple,
   futureSimpleNegative,
   goingTo,
