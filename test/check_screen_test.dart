@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:namer_app/models/verb/verb.dart';
-import 'package:namer_app/keys.dart';
+import 'package:namer_app/check_screen/keys.dart';
 import 'package:namer_app/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,7 +11,7 @@ void main() {
   Future prepare(WidgetTester tester, [Key? scaffoldKey]) async {
     await tester.binding.setSurfaceSize(const Size(3000, 1080));
     SharedPreferences.setMockInitialValues({});
-    final app = await appWithProvider(scaffoldKey);
+    final app = await appWithProvider(scaffoldKey, null);
     await tester.pumpWidget(app);
   }
 
@@ -167,7 +167,7 @@ void main() {
     await tester.pumpAndSettle();
 
     final imperativeCheckbox =
-        find.byKey(keys.inputsBlockCheckbox(Tense.imperative));
+        find.byKey(keys.inputsBlockCheckbox(Tense.imperativeMood));
 
     await tester.ensureVisible(imperativeCheckbox);
     await tester.tap(imperativeCheckbox);
@@ -176,48 +176,5 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(keys.inputsBlock('Imperative mood')), findsNothing);
-  });
-
-  testWidgets('Shows that verb is supported', (tester) async {
-    final scaffoldKey = GlobalKey<ScaffoldState>();
-    await prepare(tester, scaffoldKey);
-
-    scaffoldKey.currentState?.openDrawer();
-
-    await tester.pumpAndSettle();
-
-    final supportedVerbsInput = find.byKey(keys.supportedVerbInput);
-    final supportedVerbsButton = find.byKey(keys.supportedVerbButton);
-
-    await tester.ensureVisible(supportedVerbsInput);
-    await tester.enterText(supportedVerbsInput, 'ասել');
-
-    await tester.ensureVisible(supportedVerbsButton);
-    await tester.tap(supportedVerbsButton);
-
-    await tester.pumpAndSettle();
-
-    expect(find.byKey(keys.supportedVerbIcon(Icons.done)), findsOneWidget);
-
-    await tester
-        .pumpAndSettle(const Duration(seconds: 1)); // wait for pending timeout
-  });
-
-  testWidgets('Shows that verb is not supported', (tester) async {
-    final scaffoldKey = GlobalKey<ScaffoldState>();
-    await prepare(tester, scaffoldKey);
-
-    scaffoldKey.currentState?.openDrawer();
-
-    await tester.pumpAndSettle();
-
-    await tester.enterText(find.byKey(keys.supportedVerbInput), 'կարդալ');
-    await tester.tap(find.byKey(keys.supportedVerbButton));
-
-    await tester.pumpAndSettle();
-
-    expect(find.byKey(keys.supportedVerbIcon(Icons.close)), findsOneWidget);
-
-    await tester.pumpAndSettle(const Duration(seconds: 1));
   });
 }

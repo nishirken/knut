@@ -6,18 +6,25 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class EnabledTenses extends ChangeNotifier {
   static String key = "enabled-tenses";
-  final Map<Tense, bool> _fields = {};
+  final Map<Tense, bool> _fields =
+      Map.fromEntries(Tense.values.map((tense) => MapEntry(tense, true)));
   final SharedPreferences sharedPreferences;
 
   EnabledTenses({required this.sharedPreferences}) {
     if (sharedPreferences.getString(key) != null) {
       final map = Map.castFrom(jsonDecode(sharedPreferences.getString(key)!));
       for (final entry in map.entries) {
-        final key = Tense.values.firstWhere(
-          (enumValue) => enumValue.toString() == entry.key,
-          orElse: () => throw const FormatException(),
-        );
-        _fields[key] = entry.value;
+        try {
+          final key = Tense.values.firstWhere(
+            (enumValue) =>
+                enumValue.toString() == entry.key && enumValue != Tense.present,
+            orElse: () => throw FormatException("No tense exists", entry.key),
+          );
+          _fields[key] = entry.value;
+        } catch (e) {
+          // skip unexisted Tense values stored in preferences,
+          // will be overwritten with actual values with the next save
+        }
       }
     } else {
       for (var t in Tense.values) {

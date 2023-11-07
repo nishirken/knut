@@ -4,7 +4,7 @@ class RegularVerbsCollection {
   final String infinitive;
   final String stamp;
 
-  static InflectedVerb mkPresent(List<String> baseVerbs) {
+  static InflectedTenseCollection mkPresent(List<String> baseVerbs) {
     List<String> f(String face) {
       return baseVerbs.map((v) => '$v $face').toList();
     }
@@ -23,7 +23,7 @@ class RegularVerbsCollection {
     );
   }
 
-  static InflectedVerb mkPast(List<String> baseVerbs) {
+  static InflectedTenseCollection mkPast(List<String> baseVerbs) {
     List<String> f(String face) {
       return baseVerbs.map((v) => '$v $face').toList();
     }
@@ -91,14 +91,14 @@ class RegularVerbsCollection {
     return infinitive.endsWith('ցնել');
   }
 
-  EndingsSets<ImperativeMood> _imperativeMoodCollection(String base) {
+  EndingsSets<ImperativeMoodCollection> _imperativeMoodCollection(String base) {
     return (
       al: (singular: ['$baseա'], plural: ['$baseացեք']),
       el: (singular: ['$baseիր', '$baseի'], plural: ['$baseեք', '$baseեցեք']),
     );
   }
 
-  ImperativeMood get imperativeMood {
+  ImperativeMoodCollection get imperativeMood {
     if (hasAnalSuffix) {
       return (singular: ['$_dropLastStampցիր'], plural: ['$_dropLastStampցեք']);
     } else if (isCausative) {
@@ -112,15 +112,15 @@ class RegularVerbsCollection {
     }
   }
 
-  InflectedVerb get present {
+  InflectedTenseCollection get present {
     return RegularVerbsCollection.mkPresent(['$stampում']);
   }
 
-  InflectedVerb get pastContinious {
+  InflectedTenseCollection get pastContinious {
     return RegularVerbsCollection.mkPast(['$stampում']);
   }
 
-  InflectedVerb get pastSimple {
+  InflectedTenseCollection get pastSimple {
     List<String> f(String regular, String nel, String causativeShort) {
       if (isCausative) {
         return [
@@ -163,15 +163,15 @@ class RegularVerbsCollection {
     }
   }
 
-  InflectedVerb get presentPerfect {
+  InflectedTenseCollection get presentPerfect {
     return mkPresent(_perfectBase);
   }
 
-  InflectedVerb get pastPerfect {
+  InflectedTenseCollection get pastPerfect {
     return mkPast(_perfectBase);
   }
 
-  InflectedVerb get futureSimple {
+  InflectedTenseCollection get futureSimple {
     List<String> f(String endingEl, String endingAl) {
       return ['կ$stamp${regularAl ? endingAl : endingEl}'];
     }
@@ -190,7 +190,7 @@ class RegularVerbsCollection {
     );
   }
 
-  InflectedVerb get futureSimpleNegative {
+  InflectedTenseCollection get futureSimpleNegative {
     List<String> f(String face) {
       return ['չ$face $stamp${regularAl ? 'ա' : 'ի'}'];
     }
@@ -209,7 +209,7 @@ class RegularVerbsCollection {
     );
   }
 
-  InflectedVerb get goingTo {
+  InflectedTenseCollection get goingTo {
     return mkPresent(['$infinitiveու']);
   }
 

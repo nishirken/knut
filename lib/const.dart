@@ -2,7 +2,7 @@ import 'package:namer_app/models/verb/verb.dart';
 
 final Map<Tense, String> titles = {
   Tense.infinitive: 'Infinitive',
-  Tense.imperative: 'Imperative mood',
+  Tense.imperativeMood: 'Imperative mood',
   Tense.present: 'Present',
   Tense.presentPerfect: 'Present perfect',
   Tense.pastContinious: 'Past continious',

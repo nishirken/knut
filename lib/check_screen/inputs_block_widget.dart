@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:namer_app/keys.dart';
+import 'package:namer_app/check_screen/keys.dart';
 
 typedef Field = ({
   String name,
@@ -70,7 +70,7 @@ class InputsBlockWidget extends StatelessWidget {
               children: _column(fields.$1),
             ),
           ),
-          const SizedBox(width: 24.0, height: 0),
+          const SizedBox(width: 16.0, height: 0),
           Flexible(
             child: Column(
               children: _column(fields.$2),

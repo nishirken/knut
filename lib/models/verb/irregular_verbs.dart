@@ -1,16 +1,16 @@
 import 'package:namer_app/models/verb/regular_verbs.dart';
 import 'package:namer_app/models/verb/verb.dart';
 
-typedef Irregular = Map<
-    String,
-    ({
-      ImperativeMood imperative,
-      InflectedVerb present,
-      InflectedVerb presentPerfect,
-      InflectedVerb pastPerfect,
-      InflectedVerb pastSimple,
-      InflectedVerb pastContinious,
-    })>;
+typedef IrregularVerbTenses = ({
+  ImperativeMoodCollection? imperativeMood,
+  InflectedTenseCollection? present,
+  InflectedTenseCollection? presentPerfect,
+  InflectedTenseCollection? pastPerfect,
+  InflectedTenseCollection? pastSimple,
+  InflectedTenseCollection? pastContinious,
+});
+
+typedef Irregular = Map<String, IrregularVerbTenses>;
 
 class IrregularVerbsCollection {
   final String infinitive;
@@ -21,14 +21,14 @@ class IrregularVerbsCollection {
     required this.stamp,
   });
 
-  static InflectedVerb pastContinious(String base) {
+  static InflectedTenseCollection pastContinious(String base) {
     return (
       singular: (first: ['$baseեի'], second: ['$baseեիր'], third: ['$baseեր']),
       plural: (first: ['$baseեինք'], second: ['$baseեիք'], third: ['$baseեին']),
     );
   }
 
-  static InflectedVerb present(String base) {
+  static InflectedTenseCollection present(String base) {
     return (
       singular: (first: ['$baseեմ'], second: ['$baseես'], third: ['$baseի']),
       plural: (first: ['$baseենք'], second: ['$baseեք'], third: ['$baseեն']),
@@ -36,15 +36,12 @@ class IrregularVerbsCollection {
   }
 
   Irregular get collection {
-    final regularVerbs =
-        RegularVerbsCollection(infinitive: infinitive, stamp: stamp);
-
     return {
       'ասել': (
-        imperative: (singular: ['ասա'], plural: ['ասացեք', 'ասեք']),
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
+        imperativeMood: (singular: ['ասա'], plural: ['ասացեք', 'ասեք']),
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
         pastSimple: (
           singular: (
             first: ['ասացի'],
@@ -57,10 +54,10 @@ class IrregularVerbsCollection {
             third: ['ասացին'],
           ),
         ),
-        pastContinious: regularVerbs.pastContinious,
+        pastContinious: null,
       ),
       'գալ': (
-        imperative: (singular: ['արի'], plural: ['եկեք']),
+        imperativeMood: (singular: ['արի'], plural: ['եկեք']),
         present: RegularVerbsCollection.mkPresent(['գալիս']),
         presentPerfect: RegularVerbsCollection.mkPresent(['եկել']),
         pastPerfect: RegularVerbsCollection.mkPast(['եկել']),
@@ -76,13 +73,13 @@ class IrregularVerbsCollection {
             third: ['եկան'],
           )
         ),
-        pastContinious: regularVerbs.pastContinious,
+        pastContinious: null,
       ),
       'անել': (
-        imperative: (singular: ['արա'], plural: ['արեք']),
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
+        imperativeMood: (singular: ['արա'], plural: ['արեք']),
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
         pastSimple: (
           singular: (
             first: ['արեցի'],
@@ -95,29 +92,29 @@ class IrregularVerbsCollection {
             third: ['արեցին'],
           )
         ),
-        pastContinious: regularVerbs.pastContinious,
+        pastContinious: null,
       ),
       'առնել': (
-        imperative: (singular: ['առ'], plural: ['առեք']),
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
-        pastSimple: regularVerbs.pastSimple,
-        pastContinious: regularVerbs.pastContinious,
+        imperativeMood: (singular: ['առ'], plural: ['առեք']),
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
+        pastSimple: null,
+        pastContinious: null,
       ),
       'բերել': (
-        imperative: (singular: ['բեր'], plural: ['բերեք']),
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
-        pastSimple: regularVerbs.pastSimple,
-        pastContinious: regularVerbs.pastContinious,
+        imperativeMood: (singular: ['բեր'], plural: ['բերեք']),
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
+        pastSimple: null,
+        pastContinious: null,
       ),
       'դնել': (
-        imperative: (singular: ['դիր'], plural: ['դրեք']),
+        imperativeMood: (singular: ['դիր'], plural: ['դրեք']),
         presentPerfect: RegularVerbsCollection.mkPresent(['դրել']),
         pastPerfect: RegularVerbsCollection.mkPast(['դրել']),
-        present: regularVerbs.present,
+        present: null,
         pastSimple: (
           singular: (
             first: ['դրեցի'],
@@ -130,10 +127,10 @@ class IrregularVerbsCollection {
             third: ['դրեցին'],
           ),
         ),
-        pastContinious: regularVerbs.pastContinious,
+        pastContinious: null,
       ),
       'տալ': (
-        imperative: (singular: ['տուր'], plural: ['տվեք']),
+        imperativeMood: (singular: ['տուր'], plural: ['տվեք']),
         present: RegularVerbsCollection.mkPresent(['տալիս']),
         presentPerfect: RegularVerbsCollection.mkPresent(['տվել']),
         pastPerfect: RegularVerbsCollection.mkPast(['տվել']),
@@ -149,11 +146,11 @@ class IrregularVerbsCollection {
             third: ['տվեցին'],
           ),
         ),
-        pastContinious: regularVerbs.pastContinious,
+        pastContinious: null,
       ),
       'տանել': (
-        imperative: (singular: ['տար'], plural: ['տարեք']),
-        present: regularVerbs.present,
+        imperativeMood: (singular: ['տար'], plural: ['տարեք']),
+        present: null,
         presentPerfect: RegularVerbsCollection.mkPresent(['տարել']),
         pastPerfect: RegularVerbsCollection.mkPast(['տարել']),
         pastSimple: (
@@ -168,19 +165,19 @@ class IrregularVerbsCollection {
             third: ['տարան'],
           ),
         ),
-        pastContinious: regularVerbs.pastContinious,
+        pastContinious: null,
       ),
       'տեսեք': (
-        imperative: (singular: ['տես'], plural: ['տեսեք']),
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
-        pastSimple: regularVerbs.pastSimple,
-        pastContinious: regularVerbs.pastContinious,
+        imperativeMood: (singular: ['տես'], plural: ['տեսեք']),
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
+        pastSimple: null,
+        pastContinious: null,
       ),
       'ուտել': (
-        imperative: (singular: ['կեր'], plural: ['կերեք']),
-        present: regularVerbs.present,
+        imperativeMood: (singular: ['կեր'], plural: ['կերեք']),
+        present: null,
         presentPerfect: RegularVerbsCollection.mkPresent(['կերել']),
         pastPerfect: RegularVerbsCollection.mkPast(['կերել']),
         pastSimple: (
@@ -195,13 +192,13 @@ class IrregularVerbsCollection {
             third: ['կերան'],
           ),
         ),
-        pastContinious: regularVerbs.pastContinious,
+        pastContinious: null,
       ),
       'վեր կենալ': (
-        imperative: (singular: ['վեր կաց'], plural: ['վեր կացեք']),
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
+        imperativeMood: (singular: ['վեր կաց'], plural: ['վեր կացեք']),
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
         pastSimple: (
           singular: (
             first: ['վեր կացա'],
@@ -214,19 +211,19 @@ class IrregularVerbsCollection {
             third: ['վեր կացան'],
           ),
         ),
-        pastContinious: regularVerbs.pastContinious,
+        pastContinious: null,
       ),
       'լվանալ': (
-        imperative: (singular: ['լվա'], plural: ['լվացեք']),
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
-        pastSimple: regularVerbs.pastSimple,
-        pastContinious: regularVerbs.pastContinious,
+        imperativeMood: (singular: ['լվա'], plural: ['լվացեք']),
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
+        pastSimple: null,
+        pastContinious: null,
       ),
       'լինել': (
-        imperative: (singular: ['եղիր'], plural: ['եղեք']),
-        present: regularVerbs.present,
+        imperativeMood: (singular: ['եղիր'], plural: ['եղեք']),
+        present: null,
         presentPerfect: RegularVerbsCollection.mkPresent(['եղել']),
         pastPerfect: RegularVerbsCollection.mkPast(['եղել']),
         pastSimple: (
@@ -241,13 +238,13 @@ class IrregularVerbsCollection {
             third: ['եղան'],
           ),
         ),
-        pastContinious: regularVerbs.pastContinious,
+        pastContinious: null,
       ),
       'թողնել': (
-        imperative: (singular: ['թող'], plural: ['թողեք']),
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
+        imperativeMood: (singular: ['թող'], plural: ['թողեք']),
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
         pastSimple: (
           singular: (
             first: ['թողեցի'],
@@ -260,87 +257,90 @@ class IrregularVerbsCollection {
             third: ['թողեցին'],
           ),
         ),
-        pastContinious: regularVerbs.pastContinious,
+        pastContinious: null,
       ),
       'բացել': (
-        imperative: (singular: ['բաց', 'բացիր'], plural: ['բացարեք', 'բացեք']),
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
-        pastSimple: regularVerbs.pastSimple,
-        pastContinious: regularVerbs.pastContinious,
+        imperativeMood: (
+          singular: ['բաց', 'բացիր'],
+          plural: ['բացարեք', 'բացեք']
+        ),
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
+        pastSimple: null,
+        pastContinious: null,
       ),
       'դառնալ': (
-        imperative: (
+        imperativeMood: (
           singular: ['դարձիր', 'դառիր'],
           plural: ['դարձեք', 'դառեք']
         ),
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
-        pastSimple: regularVerbs.pastSimple,
-        pastContinious: regularVerbs.pastContinious,
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
+        pastSimple: null,
+        pastContinious: null,
       ),
       'լալ': (
-        imperative: (singular: ['լաց'], plural: ['լաց']),
+        imperativeMood: (singular: ['լաց'], plural: ['լաց']),
         present: RegularVerbsCollection.mkPresent(['լալիս']),
         pastPerfect: RegularVerbsCollection.mkPast(['լալիս']),
-        presentPerfect: regularVerbs.presentPerfect,
-        pastContinious: regularVerbs.pastContinious,
-        pastSimple: regularVerbs.pastSimple,
+        presentPerfect: null,
+        pastContinious: null,
+        pastSimple: null,
       ),
       'ընկնել': (
-        imperative: (singular: ['ընկի'], plural: ['ընկեք']),
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
-        pastSimple: regularVerbs.pastSimple,
-        pastContinious: regularVerbs.pastContinious,
+        imperativeMood: (singular: ['ընկի'], plural: ['ընկեք']),
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
+        pastSimple: null,
+        pastContinious: null,
       ),
       'տեսնել': (
-        imperative: (singular: ['տես'], plural: ['տեսեք']),
-        present: regularVerbs.present,
+        imperativeMood: (singular: ['տես'], plural: ['տեսեք']),
+        present: null,
         presentPerfect: RegularVerbsCollection.mkPresent(['տեսել']),
         pastPerfect: RegularVerbsCollection.mkPast(['տեսել']),
-        pastSimple: regularVerbs.pastSimple,
-        pastContinious: regularVerbs.pastContinious,
+        pastSimple: null,
+        pastContinious: null,
       ),
       'գտնել': (
-        imperative: (singular: ['գտի'], plural: ['գտեք']),
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
-        pastSimple: regularVerbs.pastSimple,
-        pastContinious: regularVerbs.pastContinious,
+        imperativeMood: (singular: ['գտի'], plural: ['գտեք']),
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
+        pastSimple: null,
+        pastContinious: null,
       ),
       'գրել': (
-        imperative: (singular: ['գրու'], plural: ['գտեք']),
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
-        pastSimple: regularVerbs.pastSimple,
-        pastContinious: regularVerbs.pastContinious,
+        imperativeMood: (singular: ['գրու'], plural: ['գտեք']),
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
+        pastSimple: null,
+        pastContinious: null,
       ),
       'ունենալ': (
-        imperative: regularVerbs.imperativeMood,
+        imperativeMood: null,
         present: (
           singular: (first: ['ունեմ'], second: ['ունես'], third: ['ունի']),
           plural: (first: ['ունենք'], second: ['ունեք'], third: ['ունեն']),
         ),
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
-        pastSimple: regularVerbs.pastSimple,
+        presentPerfect: null,
+        pastPerfect: null,
+        pastSimple: null,
         pastContinious: IrregularVerbsCollection.pastContinious('ուն'),
       ),
       'գիտենալ': (
-        imperative: regularVerbs.imperativeMood,
+        imperativeMood: null,
         present: (
           singular: (first: ['գիտեմ'], second: ['գիտես'], third: ['գիտի']),
           plural: (first: ['գիտենք'], second: ['գիտեք'], third: ['գիտեն']),
         ),
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
-        pastSimple: regularVerbs.pastSimple,
+        presentPerfect: null,
+        pastPerfect: null,
+        pastSimple: null,
         pastContinious: (
           singular: (first: ['գիտեյի'], second: ['գիտեյիր'], third: ['գիտեր']),
           plural: (
@@ -351,34 +351,34 @@ class IrregularVerbsCollection {
         ),
       ),
       'արժել': (
-        imperative: regularVerbs.imperativeMood,
+        imperativeMood: null,
         present: IrregularVerbsCollection.present('արժ'),
-        pastPerfect: regularVerbs.pastPerfect,
-        pastSimple: regularVerbs.pastSimple,
+        pastPerfect: null,
+        pastSimple: null,
         pastContinious: IrregularVerbsCollection.pastContinious('արժ'),
-        presentPerfect: regularVerbs.presentPerfect,
+        presentPerfect: null,
       ),
       'ուզենալ': (
-        imperative: regularVerbs.imperativeMood,
+        imperativeMood: null,
         present: RegularVerbsCollection.mkPresent(['ուզում']),
-        pastPerfect: regularVerbs.pastPerfect,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastSimple: regularVerbs.pastSimple,
-        pastContinious: regularVerbs.pastContinious,
+        pastPerfect: null,
+        presentPerfect: null,
+        pastSimple: null,
+        pastContinious: null,
       ),
       'կարողանալ': (
-        imperative: regularVerbs.imperativeMood,
+        imperativeMood: null,
         present: RegularVerbsCollection.mkPresent(['կարող', 'կարողանում']),
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
-        pastSimple: regularVerbs.pastSimple,
-        pastContinious: regularVerbs.pastContinious,
+        presentPerfect: null,
+        pastPerfect: null,
+        pastSimple: null,
+        pastContinious: null,
       ),
       'վերադարձնել': (
-        imperative: regularVerbs.imperativeMood,
-        present: regularVerbs.present,
-        presentPerfect: regularVerbs.presentPerfect,
-        pastPerfect: regularVerbs.pastPerfect,
+        imperativeMood: null,
+        present: null,
+        presentPerfect: null,
+        pastPerfect: null,
         pastSimple: (
           singular: (
             first: ['վերադարձրեցի', 'վերադարձրի'],
@@ -391,15 +391,15 @@ class IrregularVerbsCollection {
             third: ['վերադարձրեցին', 'վերադարձրին'],
           ),
         ),
-        pastContinious: regularVerbs.pastContinious
+        pastContinious: null
       ),
       'վերադառնալ': (
-        imperative: regularVerbs.imperativeMood,
-        present: regularVerbs.present,
+        imperativeMood: null,
+        present: null,
         presentPerfect: RegularVerbsCollection.mkPresent(['վերադարձել']),
         pastPerfect: RegularVerbsCollection.mkPast(['վերադարձել']),
-        pastSimple: regularVerbs.pastSimple,
-        pastContinious: regularVerbs.pastContinious,
+        pastSimple: null,
+        pastContinious: null,
       )
     };
   }
